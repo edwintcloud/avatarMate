@@ -9,11 +9,21 @@ const uploader = multer({
   storage: multer.memoryStorage()
 }).single("avatar");
 
-app.get("/avatars/:id", (req, res, next) => {
-  avatar.find({ _id: req.params.id }).limit(1).lean().then(result => {
+
+// GET ALL AVATARS FOR USER
+app.get('/avatars', authorized, (req, res, next) => {
+  // TODO: return all avatars for authorized user req.userId
+  res.json({
+    message: `${req.method} ${req.originalUrl} not implemented`
+  });
+});
+
+// GET AVATAR BY ID
+app.get("/avatars/:id", authorized, (req, res, next) => {
+  avatar.find({ _id: req.params.id, uploadedBy: req.userId }).limit(1).lean().then(result => {
     // ensure image was found
     if(result.length == 0) {
-      return next(new Error(`Image not found`));
+      return next(new Error(`Image not found or not created by current authorized user`));
     }
 
     const data = result[0].data;
@@ -28,6 +38,7 @@ app.get("/avatars/:id", (req, res, next) => {
   }).catch(err => next(err));
 });
 
+// UPLOAD AVATAR
 app.post("/avatars", authorized, (req, res, next) => {
   uploader(req, res, err => {
     if (err)
