@@ -2,6 +2,7 @@ const app = require("express")();
 const multer = require("multer");
 const { image } = require("../../services");
 const { authorized } = require("../../middlewares");
+const { avatar } = require('../../models');
 
 // multer setup
 const uploader = multer({
@@ -9,16 +10,25 @@ const uploader = multer({
 }).single("avatar");
 
 app.get("/avatars/:id", (req, res, next) => {
-  // TODO: find base64 avatar in db and convert to file, sending file to client
-  res.json({
-    message: `${req.method} ${req.originalUrl} not implemented`
-  });
+  avatar.find({ _id: req.params.id }).limit(1).lean().then(result => {
+    // ensure image was found
+    if(result.length == 0) {
+      return next(new Error(`Image not found`));
+    }
+
+    const data = result[0].data;
+    const img = Buffer.from(data.substring(data.indexOf(',') + 1), 'base64');
+    const imgType = data.substring(data.indexOf(':') + 1, data.indexOf(';'));
+
+    res.writeHead(200, {
+      'Content-Type': imgType,
+      'Content-Length': img.length
+    });
+    res.end(img);
+  }).catch(err => next(err));
 });
 
 app.post("/avatars", authorized, (req, res, next) => {
-  // TODO: save avatar in db
-  console.log(req.userId)
-  const id = req.userId;
   uploader(req, res, err => {
     if (err)
       return next(
@@ -36,10 +46,19 @@ app.post("/avatars", authorized, (req, res, next) => {
     // do image conversions using image service
     image(req.file.buffer, req.body)
       .then(result => {
-        res.json({
-          link: `${req.protocol}://${req.get("host")}${req.originalUrl}/${id}`,
-          base64: result
-        });
+
+        // save image to database
+        avatar.create({
+          data: result,
+          uploadedBy: req.userId
+        }).then(savedImg => {
+          // send json response to client
+          res.json({
+            link: `${req.protocol}://${req.get("host")}${req.originalUrl}/${savedImg._id}`,
+            base64: savedImg.data
+          });
+        }).catch(err => next(err));
+        
       })
       .catch(err => next(err));
   });

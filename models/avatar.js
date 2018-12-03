@@ -6,7 +6,7 @@ const AvatarSchema = mongoose.Schema({
     required: true
   },
   uploadedBy: {
-    type: mongooose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   }
 }, { timestamps: true });
