@@ -1,3 +1,4 @@
 const db = require('./db');
+const mailer = require('./mailer');
 
-module.exports = { db };
+module.exports = { db, mailer };
