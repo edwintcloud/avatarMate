@@ -1,20 +1,24 @@
 const app = require("express")();
 const multer = require("multer");
 const { image } = require("../../services");
+const { authorized } = require("../../middlewares");
 
 // multer setup
 const uploader = multer({
   storage: multer.memoryStorage()
 }).single("avatar");
 
-app.get("/avatars", (req, res, next) => {
+app.get("/avatars/:id", (req, res, next) => {
+  // TODO: find base64 avatar in db and convert to file, sending file to client
   res.json({
     message: `${req.method} ${req.originalUrl} not implemented`
   });
 });
 
-app.post("/avatars", (req, res, next) => {
-  const id = "objectid";
+app.post("/avatars", authorized, (req, res, next) => {
+  // TODO: save avatar in db
+  console.log(req.userId)
+  const id = req.userId;
   uploader(req, res, err => {
     if (err)
       return next(
