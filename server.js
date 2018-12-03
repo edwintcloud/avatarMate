@@ -13,6 +13,12 @@ db.connect();
 // setup express to use json
 app.use(express.json());
 
+// setup express to handle binary and multipart form data for photo upload
+app.use(express.urlencoded({
+  extended: true,
+  limit: "5mb"
+}));
+
 // setup express to use helmet middleware
 app.use(helmet());
 
