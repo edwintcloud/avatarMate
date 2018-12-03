@@ -2,9 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
-const controllers = require('./controllers');
+const v1Controllers = require('./controllers/v1');
 const { errorHandler, notFoundHandler, rateLimiter } = require('./middlewares');
 const helmet = require('helmet');
+const { db } = require('./services');
+
+// connect to mongodb
+const dbConnection = db.connect();
 
 // setup express to use json
 app.use(express.json());
@@ -15,9 +19,16 @@ app.use(helmet());
 // Apply our rate limiter middleware to all routes
 app.use(rateLimiter);
 
-// register our controllers with the server
-for(var k in controllers) {
-  app.use(controllers[k]);
+// GET INDEX
+app.get('/', (req, res) => {
+  res.json({
+    message: `Welcome to avatarMate api 🎉!`
+  });
+});
+
+// register our v1 api controllers with the server
+for(var k in v1Controllers) {
+  app.use('/api/v1', v1Controllers[k]);
 }
 
 // If no routes found then send to notFoundHandler
@@ -29,7 +40,7 @@ app.use(errorHandler);
 
 // start server
 app.listen(port, () => {
-  console.log(`Server listening for requests on PORT ${port}`)
+  console.log('\x1b[35m%s\x1b[0m', `\nExpress listening for requests on PORT ${port}\n`);
 });
 
 // Export our express server to be used for tests
