@@ -1,10 +1,9 @@
 const app = require("express")();
 const multer = require("multer");
-const jimp = require("jimp");
+const { image } = require("../../services");
 
 // multer setup
 const uploader = multer({
-  dest: "uploads/",
   storage: multer.memoryStorage()
 }).single("avatar");
 
@@ -15,11 +14,9 @@ app.get("/avatars", (req, res, next) => {
 });
 
 app.post("/avatars", (req, res, next) => {
-  
-  // begin upload using multer
+  const id = "objectid";
   uploader(req, res, err => {
-    console.log(req.body); // TODO: deal with options for file encoding and using jimp to convert stream
-    if (err) {
+    if (err)
       return next(
         new Error(
           `${
@@ -27,33 +24,20 @@ app.post("/avatars", (req, res, next) => {
           } - make sure you are using form-data upload and the key is set to avatar.`
         )
       );
-    }
-
     // get file extension and make sure it is supported
     const ext = /(?:\.([^.]+))?$/.exec(req.file.originalname)[1];
     if (ext != "png" && ext != "jpg" && ext != "jpeg") {
       return next(new Error(`File type ${ext} not supported.`));
     }
-
-    // use jimp to do stuff to image
-    jimp
-      .read(req.file.buffer)
-      .then(img => {
-        img
-          .resize(300, 300)
-          .quality(50)
-          .getBase64Async(jimp.MIME_PNG)
-          .then(base64 => {
-
-            // convert buffer to base 64 and send as json resp
-            res.json({
-              base64: base64
-            });
-          });
+    // do image conversions using image service
+    image(req.file.buffer, req.body)
+      .then(result => {
+        res.json({
+          link: `${req.protocol}://${req.get("host")}${req.originalUrl}/${id}`,
+          base64: result
+        });
       })
-      .catch(err => {
-        next(err);
-      });
+      .catch(err => next(err));
   });
 });
 
