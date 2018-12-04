@@ -16,8 +16,8 @@ module.exports = {
       from: `"avatarMate API 📸" <${process.env.GMAIL_USERNAME}>`, // sender address
       to: `${email}`, // list of receivers
       subject: "Your API key 🔑", // Subject line
-      text: `Thank you for registering an account at avatarMate.com! Your email is: ${email}. Your api key is: ${apiKey}`, // plain text body
-      html: `<p>Thank you for registering an account at avatarMate.com!</p>
+      text: `Thank you for registering an account with avatarMate API! Your email is: ${email}. Your api key is: ${apiKey}`, // plain text body
+      html: `<p>Thank you for registering an account with avatarMate API!</p>
       <div style='margin-top:10px'>
         <p>Your account details are below:</p>
         <p style='margin-left:15px'>Email: ${email}</p>

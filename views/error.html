@@ -1,0 +1,10 @@
+{% extends "index.html" %}
+{% block body %}
+<section class="hero is-dark is-fullheight-with-navbar">
+    <div class="columns">
+      <div class="column is-one-third is-offset-one-third" style="margin-top: 75px;">
+       {{ error | safe}}
+      </div>
+    </div>
+  </section>
+{% endblock %}

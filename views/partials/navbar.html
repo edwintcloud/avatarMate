@@ -29,8 +29,13 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
+          {% if session %}
+          <a class="button is-info" href="/recover">Resend API Key</a>
+          <a class="button is-danger" href="/logout"> Log out </a>
+          {% else %}
           <a class="button is-link" href="/signup">Sign up</a>
           <a class="button is-success" href="/login"> Log in </a>
+          {% endif %}
         </div>
       </div>
     </div>

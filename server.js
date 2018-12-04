@@ -8,9 +8,24 @@ const { errorHandler, notFoundHandler, rateLimiter } = require("./middlewares");
 const helmet = require("helmet");
 const views = require('./controllers/views');
 const { db } = require("./services");
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 // connect to mongodb
-db.connect();
+const dbConnection = db.connect();
+
+// Setup express to use our session - make sure to set your secure secret!
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+      maxAge: 1800000  // 30 minutes (in ms) and our session will expire
+  },
+  store: new MongoStore({
+      mongooseConnection: dbConnection
+  })
+}));
 
 // Configure nunjucks templating engine
 nunjucks.configure('views', {
@@ -34,6 +49,16 @@ app.use(helmet());
 
 // Apply our rate limiter middleware to all routes
 app.use(rateLimiter);
+
+// Set a local variable to hold session before routes for template usage
+app.use((req, res, next) => {
+  if(req.session) {
+    res.locals.session = req.session.user;
+  } else {
+    res.locals.session = undefined;
+  }
+  next();
+});
 
 // Use views controller to display our templates for front-end
 app.use(views);
