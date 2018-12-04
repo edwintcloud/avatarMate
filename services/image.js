@@ -5,8 +5,8 @@ module.exports = async (buffer, options) => {
   try {
     // set options based on passed in options or use defaults
     const opts = {
-      width: Number(options.width) < 500 ? Number(options.width) : 100,
-      height: Number(options.height) < 500 ? Number(options.height) : 100,
+      width: Number(options.width) < 1000 ? Number(options.width) : 100,
+      height: Number(options.height) < 1000 ? Number(options.height) : 100,
       quality: Number(options.quality) || 50,
       brightness: Number(options.brightness) || 0,
       contrast: Number(options.contrast) || 0,

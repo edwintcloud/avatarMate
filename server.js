@@ -1,14 +1,24 @@
 require("dotenv").config();
+const nunjucks = require('nunjucks');
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 5000;
 const v1Controllers = require("./controllers/v1");
 const { errorHandler, notFoundHandler, rateLimiter } = require("./middlewares");
 const helmet = require("helmet");
+const views = require('./controllers/views');
 const { db } = require("./services");
 
 // connect to mongodb
 db.connect();
+
+// Configure nunjucks templating engine
+nunjucks.configure('views', {
+  autoescape: true,
+  express: app
+});
+app.set('view engine', 'html');
+app.set('views', './views');
 
 // setup express to use json
 app.use(express.json());
@@ -25,12 +35,8 @@ app.use(helmet());
 // Apply our rate limiter middleware to all routes
 app.use(rateLimiter);
 
-// GET INDEX
-app.get("/", (req, res) => {
-  res.json({
-    message: `Welcome to avatarMate api 🎉!`
-  });
-});
+// Use views controller to display our templates for front-end
+app.use(views);
 
 // register our v1 api controllers with the server
 for (var k in v1Controllers) {
