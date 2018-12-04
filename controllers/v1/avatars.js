@@ -114,7 +114,7 @@ app.post("/avatars", authorized, (req, res, next) => {
     }
 
     // ensure name is specified
-    if (!req.body['name'] || req.body.name.length < 3) {
+    if (!req.body["name"] || req.body.name.length < 3) {
       return next(
         new Error(
           `Please specify a name greater than 3 characters for your avatar`
@@ -149,10 +149,40 @@ app.post("/avatars", authorized, (req, res, next) => {
 
 // PUT - CHANGE AVATAR NAME
 app.put("/avatars/:id", authorized, (req, res, next) => {
-  // TODO: change avatar name
-  res.json({
-    message: `${req.method} ${req.originalUrl} not implemented`
-  });
+  // make sure param is a valid object id
+  if (!db.isValidObjectId(req.params.id)) {
+    return next(new Error(`Invalid objectId`));
+  }
+
+  // make sure req.body.name exists and is at least 3 characters
+  if (!req.body["name"] || req.body.name.length < 3) {
+    return next(
+      new Error(
+        `Please specify a name greater than 3 characters for your avatar`
+      )
+    );
+  }
+
+  const updates = {
+    name: req.body.name
+  };
+
+  // update name in db
+  avatar
+    .updateOne({ _id: req.params.id, uploadedBy: req.userId }, updates)
+    .then(result => {
+      if (result.n == 0) {
+        return next(
+          new Error(
+            `Avatar does not exist or was not uploaded by currently authorized user`
+          )
+        );
+      }
+      res.json({
+        message: `Successfully updated avatar name to ${updates.name}`
+      });
+    })
+    .catch(err => next(err));
 });
 
 // DELETE AVATAR
