@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "name": "avatarMate",
+  "alias": "avatarMate.now.sh",
+  "env": {
+    "MONGODB": "@mlab-uri",
+    "GMAIL_USERNAME": "@gmail-username",
+    "GMAIL_PASSWORD": "@gmail-password",
+    "JWT_SECRET": "@session-secret",
+    "SESSION_SECRET": "@session-secret"
+  },
+  "builds": [
+    { "src": "server.js", "use": "@now/node-server" }
+  ]
+}
