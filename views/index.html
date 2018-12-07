@@ -18,6 +18,39 @@
       defer
       src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
     ></script>
+    <style>
+      body {
+        background-color: #363636;
+      }
+      @media (max-width: 700px) {
+        form, .column {
+          margin: 0 20px;
+        }
+
+        .hero-body.is-fullheight {
+          height: 30vh!important;
+        }
+
+        #demo_img {
+          margin: 20px 0 0 0;
+        }
+        
+        .img_col {
+          text-align: center;
+        }
+
+        .img_col > p {
+          margin-bottom: 20px;
+        }
+        .columns:last-child {
+          margin-bottom: 0!important;
+        }
+
+        .hero.is-fullheight-with-navbar {
+          margin-top: 30px;
+        }
+      }
+    </style>
   </head>
   <body>
     {% block nav %} {% include "partials/navbar.html" %} {% endblock %} {% block
@@ -97,7 +130,7 @@
                         <button class="button is-link is-medium is-pulled-right" type="submit">Convert</a>
                         </form>
                   </div>
-                  <div class="column">
+                  <div class="column img_col">
                     {% if image %}
                       <a id="demo_link" href={{ image.link }} target="_blank">
                         <object id="demo_img" data={{ image.base64 }} type="image/png" style="height:200px;width:200px;"></object>
