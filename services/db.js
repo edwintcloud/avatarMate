@@ -5,7 +5,7 @@ and other useful database related methods.
 
 const mongoose = require("mongoose");
 const dbURI =
-  process.env.MONGODB || `mongodb://localhost/${process.env.npm_package_name}`;
+process.env.MONGODB_URI || `mongodb://localhost/${process.env.npm_package_name}`;
 const dbOptions = {
   useNewUrlParser: true,
   reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
