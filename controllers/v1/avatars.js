@@ -1,4 +1,4 @@
-const app = require("express")();
+const app = require("express").Router();
 const multer = require("multer");
 const { image, db } = require("../../services");
 const { authorized } = require("../../middlewares");
@@ -107,6 +107,11 @@ app.post("/avatars", authorized, (req, res, next) => {
           } - make sure you are using form-data upload and the key is set to avatar.`
         )
       );
+
+    // make sure we have a file to upload
+    if(!req.file) {
+      return next(new Error(`No File specified`));
+    }
     // get file extension and make sure it is supported
     const ext = /(?:\.([^.]+))?$/.exec(req.file.originalname)[1];
     if (ext != "png" && ext != "jpg" && ext != "jpeg") {
@@ -133,13 +138,20 @@ app.post("/avatars", authorized, (req, res, next) => {
             uploadedBy: req.userId
           })
           .then(savedImg => {
-            // send json response to client
-            res.json({
+            const image = {
               link: `${req.protocol}://${req.get("host")}${
                 req.originalUrl
               }/view/${savedImg._id}`,
               base64: savedImg.data
-            });
+            };
+
+            // if session is set (demo from webpage) render the homepage with image
+            if(req.session) {
+              res.render('index', {image: image});
+              return;
+            }
+            // send json response to client
+            res.json(image);
           })
           .catch(err => next(err));
       })

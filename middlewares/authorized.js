@@ -1,6 +1,12 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = function(req, res, next) {
+  // if we are using a server session, set req.userId and return
+  if(req.session) {
+    req.userId = req.session.user._id;
+    return next();
+  }
+
   // check that authorization header is set
   if(!req.headers.authorization || req.headers.authorization.split(' ')[0] != 'Bearer') {
     res.status(401);

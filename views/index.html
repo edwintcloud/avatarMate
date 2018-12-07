@@ -33,14 +33,20 @@
           </div>
         </div>
               {% if session %}
+              <script type="text/javascript">
+                function fileChanged(e) {
+                  const fn = e.value.split(/(\\|\/)/g).pop();
+                  document.querySelector('.file-name').innerHTML = fn;
+                }
+              </script>
               <div class="column is-half" style="padding-top:50px;display: flex;flex-direction: column;justify-content: center;">
               <h1 class="title">Demo</h1>
               <div class="columns">
                   <div class="column is-half">
-                      <form action="/login" method="post">
+                      <form id="file_upload" method="post" enctype="multipart/form-data" action="/api/v1/avatars">
                         <div class="file has-name">
                             <label class="file-label">
-                              <input class="file-input" type="file" name="resume">
+                              <input class="file-input" type="file" name="avatar" onchange="fileChanged(this);">
                               <span class="file-cta">
                                 <span class="file-icon">
                                   <i class="fas fa-upload"></i>
@@ -50,16 +56,16 @@
                                 </span>
                               </span>
                               <span class="file-name">
-                                Screen Shot 2017-07-29 at 15.54.25.png
+                              
                               </span>
                             </label>
                           </div>
                         <div class="field">
                           <label class="label has-text-white" style="margin-top:10px;">Width</label>
                           <div class="select">
-                              <select>
-                                <option value="64">64px</option>
+                              <select name="width">
                                 <option value="100">100px</option>
+                                <option value="64">64px</option>
                                 <option value="300">300px</option>
                               </select>
                             </div>
@@ -68,9 +74,9 @@
                         <div class="field">
                             <label class="label has-text-white">Height</label>
                             <div class="select">
-                                <select>
-                                  <option value="64">64px</option>
+                                <select name="height">
                                   <option value="100">100px</option>
+                                  <option value="64">64px</option>
                                   <option value="300">300px</option>
                                 </select>
                               </div>
@@ -79,36 +85,30 @@
                           <div class="field">
                               <label class="label has-text-white">Quality</label>
                               <div class="select">
-                                  <select>
-                                    <option value="50">50%</option>
-                                    <option value="70">70%</option>
+                                  <select name="quality">
                                     <option value="100">100%</option>
+                                    <option value="80">80%</option>
+                                    <option value="70">70%</option>
+                                    <option value="50">50%</option>
                                   </select>
                                 </div>
                             </div>
-                            <div class="field">
-                                <label class="label has-text-white">Invert</label>
-                                <div class="select">
-                                    <select>
-                                      <option value="false">true</option>
-                                      <option value="true">false</option>
-                                    </select>
-                                  </div>
-                              </div>
-                  
+                        <input type="hidden" name="name" value="demo">
                         <button class="button is-link is-medium is-pulled-right" type="submit">Convert</a>
                         </form>
                   </div>
                   <div class="column">
-                    <a id="demo_link" href="" target="_blank">
-                      <object id="demo_img" data="" type="image/png" style="height:200px;width:200px;"></object>
-                    </a>
-                    <p>Click to open in new tab</p>
+                    {% if image %}
+                      <a id="demo_link" href={{ image.link }} target="_blank">
+                        <object id="demo_img" data={{ image.base64 }} type="image/png" style="height:200px;width:200px;"></object>
+                      </a>
+                      <p>Click to open in new tab</p>
+                    {% else %}
+                    <object id="demo_img" data="" type="image/png" style="height:200px;width:200px;"></object>
+                    {% endif %}
+                    
+                    
                   </div>
-                  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-                  <script>
-                  
-                  </script>
                 </div>
               {% else %}
               <div class="column is-7" style="padding-top:20px;display: flex;align-items: center;justify-content: center;margin-right: 10px;">
