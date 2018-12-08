@@ -59,15 +59,15 @@ curl "https://avatarmate.herokuapp.com/api/v1/avatars"
 ```json
 [
   {
-    "id": "objectId",
-    "name": "photo1",
-    "link": "url1"
+    "id": "5c0af34df63e7f00163069e0",
+    "name": "demo",
+    "link": "http://avatarmate.herokuapp.com/api/v1/avatars/view/5c0af34df63e7f00163069e0"
   },
   {
-    "id": "objectId",
-    "name": "photo2",
-    "link": "url2"
-  }
+    "id": "5c0af440f63e7f00163069e0",
+    "name": "demo",
+    "link": "http://avatarmate.herokuapp.com/api/v1/avatars/view/5c0af440f63e7f00163069e0"
+  },
 ]
 ```
 
@@ -75,12 +75,12 @@ This endpoint retrieves all avatars for current authorized user.
 
 ### HTTP Request
 
-`GET /api/v1/avatars`
+`GET https://avatarmate.herokuapp.com/api/v1/avatars`
 
 ## Get a Specific Avatar
 
 ```shell
-curl "/api/v1/avatars/id"
+curl "https://avatarmate.herokuapp.com/api/v1/avatars/<ID>"
   -H "Authorization: Bearer api_key"
 ```
 
@@ -88,8 +88,9 @@ curl "/api/v1/avatars/id"
 
 ```json
 {
-  "link": "url",
-  "base64": "base64 representation of image"
+  "name": "demo",
+  "link": "http://avatarmate.herokuapp.com/api/v1/avatars/view/5c0af440f63e7f00163069e0",
+  "base64": "data:image/png;base64,VBORw0KGgoAAAANSUhEUgAAAGYAAABmCAYAAAA53+R..."
 }
 ```
 
@@ -99,7 +100,7 @@ This endpoint retrieves a specific avatar for current authorized user.
 
 ### HTTP Request
 
-`GET /api/v1/avatars/<ID>`
+`GET https://avatarmate.herokuapp.com/api/v1/avatars/<ID>`
 
 ### URL Parameters
 
@@ -110,7 +111,7 @@ ID | The ID of the avatar to retrieve
 ## Delete a Specific Avatar
 
 ```shell
-curl "/api/v1/avatars/id"
+curl "https://avatarmate.herokuapp.com/api/v1/avatars/<ID>"
   -X DELETE
   -H "Authorization: Bearer api_key"
 ```
@@ -119,7 +120,7 @@ curl "/api/v1/avatars/id"
 
 ```json
 {
-  "message": "Avatar id successfully deleted!"
+  "message": "Successfully deleted avatar 5c0af440f63e7f00163069e0"
 }
 ```
 
@@ -127,7 +128,7 @@ This endpoint deletes a specific avatar for current authorized user.
 
 ### HTTP Request
 
-`DELETE /api/v1/avatars/<ID>`
+`DELETE https://avatarmate.herokuapp.com/api/v1/avatars/<ID>`
 
 ### URL Parameters
 

@@ -25,9 +25,7 @@ app.get("/avatars", authorized, (req, res, next) => {
           return {
             id: x._id,
             name: x.name,
-            link: `${req.protocol}://${req.get("host")}${
-              req.originalUrl
-            }/view/${x._id}`
+            link: `${req.protocol}://${req.get("host")}/api/v1/avatars/view/${x._id}`
           };
         })
       );
@@ -55,7 +53,7 @@ app.get("/avatars/:id", authorized, (req, res, next) => {
       }
       res.json({
         name: result[0].name,
-        link: `${req.protocol}://${req.get("host")}${req.originalUrl}/view/${
+        link: `${req.protocol}://${req.get("host")}/api/v1/avatars/view/${
           result[0]._id
         }`,
         base64: result[0].data
