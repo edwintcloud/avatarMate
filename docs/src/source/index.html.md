@@ -6,7 +6,7 @@ language_tabs: # must be one of https://git.io/vQNgJ
 
 toc_footers:
   - <a>&nbsp;</a>
-  - <a href='#'>Sign Up for a Developer Key</a>
+  - <a href='https://avatarmate.herokuapp.com/signup'>Sign Up for a Developer Key</a>
   - <a>&nbsp;</a>
   - <a>&nbsp;</a>
   - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
@@ -29,13 +29,13 @@ You can view code examples in the dark area to the right. On the left are detail
 
 ```shell
 # With shell, you can just pass the correct header with each request
-curl "/api/v1/endpoint"
+curl "https://avatarmate.herokuapp.com/api/v1/"
   -H "Authorization: Bearer api_key"
 ```
 
 > Make sure to replace `api_key` with your API key.
 
-avatarMate API uses API keys to allow access to the API. You can register a new avatarMate API key [here](http://example.com/developers) or receive one when creating a user as described below.
+avatarMate API uses API keys to allow access to the API. You can register a new avatarMate API key [here](https://avatarmate.herokuapp.com/signup) or receive one when creating a user as described below.
 
 avatarMate API expects for the API key to be included in all API requests to the server in a header that looks like the following:
 
@@ -50,7 +50,7 @@ You must replace <code>api_key</code> with your personal API key.
 ## Get All Avatars
 
 ```shell
-curl "/api/v1/avatars"
+curl "https://avatarmate.herokuapp.com/api/v1/avatars"
   -H "Authorization: Bearer api_key"
 ```
 
