@@ -137,14 +137,12 @@ app.post("/avatars", authorized, (req, res, next) => {
           })
           .then(savedImg => {
             const image = {
-              link: `${req.protocol}://${req.get("host")}${
-                req.originalUrl
-              }/view/${savedImg._id}`,
+              link: `${req.protocol}://${req.get("host")}/api/v1/avatars/view/${savedImg._id}`,
               base64: savedImg.data
             };
 
             // if session is set (demo from webpage) render the homepage with image
-            if(req.session) {
+            if(req.session.hasOwnProperty('user')) {
               res.render('index', {image: image});
               return;
             }
