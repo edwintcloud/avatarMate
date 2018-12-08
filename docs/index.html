@@ -228,13 +228,30 @@
             <a href="#avatars" class="toc-h1 toc-link" data-title="Avatars">Avatars</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#get-all-avatars" class="toc-h2 toc-link" data-title="Get All Avatars">Get All Avatars</a>
+                    <a href="#create-an-avatar" class="toc-h2 toc-link" data-title="Create an Avatar">Create an Avatar</a>
                   </li>
                   <li>
                     <a href="#get-a-specific-avatar" class="toc-h2 toc-link" data-title="Get a Specific Avatar">Get a Specific Avatar</a>
                   </li>
                   <li>
+                    <a href="#get-all-avatars" class="toc-h2 toc-link" data-title="Get All Avatars">Get All Avatars</a>
+                  </li>
+                  <li>
+                    <a href="#update-a-specific-avatar" class="toc-h2 toc-link" data-title="Update a Specific Avatar">Update a Specific Avatar</a>
+                  </li>
+                  <li>
                     <a href="#delete-a-specific-avatar" class="toc-h2 toc-link" data-title="Delete a Specific Avatar">Delete a Specific Avatar</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#users" class="toc-h1 toc-link" data-title="Users">Users</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#create-a-user" class="toc-h2 toc-link" data-title="Create a User">Create a User</a>
+                  </li>
+                  <li>
+                    <a href="#request-api-key-login-a-user" class="toc-h2 toc-link" data-title="Request API Key - Login a User">Request API Key - Login a User</a>
                   </li>
               </ul>
           </li>
@@ -244,7 +261,7 @@
       </ul>
         <ul class="toc-footer">
             <li><a>&nbsp;</a></li>
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
+            <li><a href='https://avatarmate.herokuapp.com/signup'>Sign Up for a Developer Key</a></li>
             <li><a>&nbsp;</a></li>
             <li><a>&nbsp;</a></li>
             <li><a href='https://github.com/lord/slate'>Documentation Powered by Slate</a></li>
@@ -262,14 +279,14 @@
 <p>To authorize, use this code:</p>
 </blockquote>
 <pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"/api/v1/endpoint"</span>
+curl <span class="s2">"https://avatarmate.herokuapp.com/api/v1/"</span>
   -H <span class="s2">"Authorization: Bearer api_key"</span>
 </code></pre>
 <blockquote>
 <p>Make sure to replace <code>api_key</code> with your API key.</p>
 </blockquote>
 
-<p>avatarMate API uses API keys to allow access to the API. You can register a new avatarMate API key <a href="http://example.com/developers">here</a> or receive one when creating a user as described below.</p>
+<p>avatarMate API uses API keys to allow access to the API. You can register a new avatarMate API key <a href="https://avatarmate.herokuapp.com/signup">here</a> or receive one when creating a user as described below.</p>
 
 <p>avatarMate API expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
 
@@ -278,44 +295,138 @@ curl <span class="s2">"/api/v1/endpoint"</span>
 <aside class="notice">
 You must replace <code>api_key</code> with your personal API key.
 </aside>
-<h1 id='avatars'>Avatars</h1><h2 id='get-all-avatars'>Get All Avatars</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"/api/v1/avatars"</span>
+<h1 id='avatars'>Avatars</h1><h2 id='create-an-avatar'>Create an Avatar</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://avatarmate.herokuapp.com/api/v1/avatars"</span>
   -H <span class="s2">"Authorization: Bearer api_key"</span>
+  -X POST
+  -F <span class="nv">avatar</span><span class="o">=</span>@fileName.png
+  -F <span class="nv">name</span><span class="o">=</span>avatarName
+  -F <span class="nv">option</span><span class="o">=</span>value
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"objectId"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"photo1"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"link"</span><span class="p">:</span><span class="w"> </span><span class="s2">"url1"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"objectId"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"photo2"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"link"</span><span class="p">:</span><span class="w"> </span><span class="s2">"url2"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"demo"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"link"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://avatarmate.herokuapp.com/api/v1/avatars/view/5c0af440f63e7f00163069e0"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"base64"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data:image/png;base64,VBORw0KGgoAAAANSUhEUgAAAGYAAABmCAYAAAA53+R..."</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>This endpoint retrieves all avatars for current authorized user.</p>
+<p>This endpoint creates an avatar for the currently authorized user.</p>
+
+<aside class="warning">Specify each option as a separate <code>-F option=value</code> argument in the curl requests. If no options are specified, the defaults are used. The options avatar and name are required (see below).</aside>
 <h3 id='http-request'>HTTP Request</h3>
-<p><code>GET /api/v1/avatars</code></p>
-<h2 id='get-a-specific-avatar'>Get a Specific Avatar</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"/api/v1/avatars/id"</span>
+<p><code>POST https://avatarmate.herokuapp.com/api/v1/avatars</code></p>
+<h3 id='form-data-options'>Form-Data Options</h3>
+<table><thead>
+<tr>
+<th>Option</th>
+<th>Example Value</th>
+<th>Default Value</th>
+<th>Required</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>avatar</td>
+<td>@avatar.png</td>
+<td>none</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>name</td>
+<td>demo</td>
+<td>none</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>width</td>
+<td>300</td>
+<td>100</td>
+<td>N</td>
+</tr>
+<tr>
+<td>height</td>
+<td>300</td>
+<td>100</td>
+<td>N</td>
+</tr>
+<tr>
+<td>quality</td>
+<td>100</td>
+<td>50</td>
+<td>N</td>
+</tr>
+<tr>
+<td>brightness</td>
+<td>0.2</td>
+<td>0</td>
+<td>N</td>
+</tr>
+<tr>
+<td>contrast</td>
+<td>0.1</td>
+<td>0</td>
+<td>N</td>
+</tr>
+<tr>
+<td>greyscale</td>
+<td>true</td>
+<td>false</td>
+<td>N</td>
+</tr>
+<tr>
+<td>invert</td>
+<td>true</td>
+<td>false</td>
+<td>N</td>
+</tr>
+<tr>
+<td>sepia</td>
+<td>true</td>
+<td>false</td>
+<td>N</td>
+</tr>
+<tr>
+<td>rotate</td>
+<td>90</td>
+<td>0</td>
+<td>N</td>
+</tr>
+<tr>
+<td>flipH</td>
+<td>true</td>
+<td>false</td>
+<td>N</td>
+</tr>
+<tr>
+<td>flipV</td>
+<td>true</td>
+<td>false</td>
+<td>N</td>
+</tr>
+<tr>
+<td>format</td>
+<td>&quot;image/png&quot;</td>
+<td>&quot;image/png&quot;</td>
+<td>N</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">For more information about supported format values and other option supported values see the documentation for the module this api is based on (Jimp) <a href="https://www.npmjs.com/package/jimp" target="_blank">here</a>.</aside>
+<h2 id='get-a-specific-avatar'>Get a Specific Avatar</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://avatarmate.herokuapp.com/api/v1/avatars/&lt;ID&gt;"</span>
   -H <span class="s2">"Authorization: Bearer api_key"</span>
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"link"</span><span class="p">:</span><span class="w"> </span><span class="s2">"url"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"base64"</span><span class="p">:</span><span class="w"> </span><span class="s2">"base64 representation of image"</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"demo"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"link"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://avatarmate.herokuapp.com/api/v1/avatars/view/5c0af440f63e7f00163069e0"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"base64"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data:image/png;base64,VBORw0KGgoAAAANSUhEUgAAAGYAAABmCAYAAAA53+R..."</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>This endpoint retrieves a specific avatar for current authorized user.</p>
-
-<!-- <aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside> -->
+<p>This endpoint retrieves a specific avatar for the currently authorized user.</p>
 <h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET /api/v1/avatars/&lt;ID&gt;</code></p>
+<p><code>GET https://avatarmate.herokuapp.com/api/v1/avatars/&lt;ID&gt;</code></p>
 <h3 id='url-parameters'>URL Parameters</h3>
 <table><thead>
 <tr>
@@ -328,21 +439,71 @@ You must replace <code>api_key</code> with your personal API key.
 <td>The ID of the avatar to retrieve</td>
 </tr>
 </tbody></table>
-<h2 id='delete-a-specific-avatar'>Delete a Specific Avatar</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"/api/v1/avatars/id"</span>
-  -X DELETE
+<h2 id='get-all-avatars'>Get All Avatars</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://avatarmate.herokuapp.com/api/v1/avatars"</span>
   -H <span class="s2">"Authorization: Bearer api_key"</span>
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5c0af34df63e7f00163069e0"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"demo"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"link"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://avatarmate.herokuapp.com/api/v1/avatars/view/5c0af34df63e7f00163069e0"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5c0af440f63e7f00163069e0"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"demo"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"link"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://avatarmate.herokuapp.com/api/v1/avatars/view/5c0af440f63e7f00163069e0"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<p>This endpoint retrieves all avatars for the currently authorized user.</p>
+<h3 id='http-request-3'>HTTP Request</h3>
+<p><code>GET https://avatarmate.herokuapp.com/api/v1/avatars</code></p>
+<h2 id='update-a-specific-avatar'>Update a Specific Avatar</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://avatarmate.herokuapp.com/api/v1/avatars/&lt;ID&gt;"</span>
+  -H <span class="s2">"Authorization: Bearer api_key"</span>
+  -H <span class="s2">"Content-Type:application/json"</span>
+  -X PUT
+  -d <span class="s1">'{"name":"changedName"}'</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Avatar id successfully deleted!"</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Successfully updated avatar name to changedName"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>This endpoint deletes a specific avatar for current authorized user.</p>
-<h3 id='http-request-3'>HTTP Request</h3>
-<p><code>DELETE /api/v1/avatars/&lt;ID&gt;</code></p>
+<p>This endpoint updates the name of a specific avatar for the currently authorized user.</p>
+<h3 id='http-request-4'>HTTP Request</h3>
+<p><code>PUT https://avatarmate.herokuapp.com/api/v1/avatars/&lt;ID&gt;</code></p>
 <h3 id='url-parameters-2'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>The ID of the avatar to retrieve</td>
+</tr>
+</tbody></table>
+<h2 id='delete-a-specific-avatar'>Delete a Specific Avatar</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://avatarmate.herokuapp.com/api/v1/avatars/&lt;ID&gt;"</span>
+  -H <span class="s2">"Authorization: Bearer api_key"</span>
+  -X DELETE
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Successfully deleted avatar 5c0af440f63e7f00163069e0"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint deletes a specific avatar for the currently authorized user.</p>
+<h3 id='http-request-5'>HTTP Request</h3>
+<p><code>DELETE https://avatarmate.herokuapp.com/api/v1/avatars/&lt;ID&gt;</code></p>
+<h3 id='url-parameters-3'>URL Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -354,11 +515,74 @@ You must replace <code>api_key</code> with your personal API key.
 <td>The ID of the avatar to delete</td>
 </tr>
 </tbody></table>
-<h1 id='errors'>Errors</h1>
-<!-- <aside class="notice">
-This error section is stored in a separate file in <code>includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files...just save them to the <code>includes</code> folder and add them to the top of your <code>index.md</code>'s frontmatter. Files are included in the order listed.
-</aside> -->
+<h1 id='users'>Users</h1><h2 id='create-a-user'>Create a User</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://avatarmate.herokuapp.com/api/v1/users"</span>
+  -H <span class="s2">"Content-Type:application/json"</span>
+  -X POST
+  -d <span class="s1">'{"email":"email@domain.com","password":"supersecret"}'</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Account created successfully! Please check your email for details."</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint creates a user and sends a generated API key to new user&#39;s email.</p>
 
+<aside class="notice">Creating a user sends an email to the registered email address. Make sure to check your email for your API key!</aside>
+<h3 id='http-request-6'>HTTP Request</h3>
+<p><code>POST https://avatarmate.herokuapp.com/api/v1/users</code></p>
+<h3 id='json-parameters'>JSON Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Requirements</th>
+<th>Required</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>email</td>
+<td>Unique, At Least 5 Characters, Valid Email</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>password</td>
+<td>At Least 6 Characters</td>
+<td>Y</td>
+</tr>
+</tbody></table>
+<h2 id='request-api-key-login-a-user'>Request API Key - Login a User</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://avatarmate.herokuapp.com/api/v1/users/login"</span>
+  -H <span class="s2">"Content-Type:application/json"</span>
+  -X POST
+  -d <span class="s1">'{"email":"email@domain.com","password":"supersecret"}'</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"An email has been sent to email@domain.com with your account details."</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint authenticates a user and sends an email with the user&#39;s API key.</p>
+<h3 id='http-request-7'>HTTP Request</h3>
+<p><code>POST https://avatarmate.herokuapp.com/api/v1/users/login</code></p>
+<h3 id='json-parameters-2'>JSON Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>email</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>password</td>
+<td>Y</td>
+</tr>
+</tbody></table>
+<h1 id='errors'>Errors</h1>
 <p>The avatarMate API uses the following error codes:</p>
 
 <table><thead>
@@ -373,7 +597,11 @@ This error section is stored in a separate file in <code>includes/_errors.md</co
 </tr>
 <tr>
 <td>401</td>
-<td>Unauthorized -- Your API key is wrong.</td>
+<td>Unauthorized -- Your API key or the credentials you supplied are wrong.</td>
+</tr>
+<tr>
+<td>409</td>
+<td>Resource Conflict -- You tried to create a user with an email that already has an account.</td>
 </tr>
 <tr>
 <td>404</td>
@@ -386,6 +614,10 @@ This error section is stored in a separate file in <code>includes/_errors.md</co
 <tr>
 <td>500</td>
 <td>Internal Server Error -- We had a problem with our server. Try again later.</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Application Error -- Heroku blew up, the world is ending, prepare for the apocalypse.</td>
 </tr>
 </tbody></table>
 

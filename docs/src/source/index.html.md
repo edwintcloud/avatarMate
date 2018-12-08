@@ -51,10 +51,11 @@ You must replace <code>api_key</code> with your personal API key.
 
 ```shell
 curl "https://avatarmate.herokuapp.com/api/v1/avatars"
+  -H "Authorization: Bearer api_key"
+  -X POST
   -F avatar=@fileName.png
   -F name=avatarName
   -F option=value
-  -H "Authorization: Bearer api_key"
 ```
 
 > The above command returns JSON structured like this:
@@ -67,7 +68,7 @@ curl "https://avatarmate.herokuapp.com/api/v1/avatars"
 }
 ```
 
-This endpoint creates an avatar for current authorized user.
+This endpoint creates an avatar for the currently authorized user.
 
 <aside class="warning">Specify each option as a separate <code>-F option=value</code> argument in the curl requests. If no options are specified, the defaults are used. The options avatar and name are required (see below).</aside>
 
@@ -94,7 +95,7 @@ flipH | true | false | N
 flipV | true | false | N
 format | "image/png" | "image/png" | N
 
-<aside class="info">For more information about supported format values and other option supported values see the documentation for the module this api is based on (Jimp) <a href="https://www.npmjs.com/package/jimp" target="_blank">here</a>.</aside>
+<aside class="notice">For more information about supported format values and other option supported values see the documentation for the module this api is based on (Jimp) <a href="https://www.npmjs.com/package/jimp" target="_blank">here</a>.</aside>
 
 ## Get a Specific Avatar
 
@@ -113,9 +114,7 @@ curl "https://avatarmate.herokuapp.com/api/v1/avatars/<ID>"
 }
 ```
 
-This endpoint retrieves a specific avatar for current authorized user.
-
-<!-- <aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside> -->
+This endpoint retrieves a specific avatar for the currently authorized user.
 
 ### HTTP Request
 
@@ -151,7 +150,7 @@ curl "https://avatarmate.herokuapp.com/api/v1/avatars"
 ]
 ```
 
-This endpoint retrieves all avatars for current authorized user.
+This endpoint retrieves all avatars for the currently authorized user.
 
 ### HTTP Request
 
@@ -162,25 +161,24 @@ This endpoint retrieves all avatars for current authorized user.
 ```shell
 curl "https://avatarmate.herokuapp.com/api/v1/avatars/<ID>"
   -H "Authorization: Bearer api_key"
+  -H "Content-Type:application/json"
+  -X PUT
+  -d '{"name":"changedName"}'
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "name": "demo",
-  "link": "http://avatarmate.herokuapp.com/api/v1/avatars/view/5c0af440f63e7f00163069e0",
-  "base64": "data:image/png;base64,VBORw0KGgoAAAANSUhEUgAAAGYAAABmCAYAAAA53+R..."
+  "message": "Successfully updated avatar name to changedName"
 }
 ```
 
-This endpoint retrieves a specific avatar for current authorized user.
-
-<!-- <aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside> -->
+This endpoint updates the name of a specific avatar for the currently authorized user.
 
 ### HTTP Request
 
-`GET https://avatarmate.herokuapp.com/api/v1/avatars/<ID>`
+`PUT https://avatarmate.herokuapp.com/api/v1/avatars/<ID>`
 
 ### URL Parameters
 
@@ -192,8 +190,8 @@ ID | The ID of the avatar to retrieve
 
 ```shell
 curl "https://avatarmate.herokuapp.com/api/v1/avatars/<ID>"
-  -X DELETE
   -H "Authorization: Bearer api_key"
+  -X DELETE
 ```
 
 > The above command returns JSON structured like this:
@@ -204,7 +202,7 @@ curl "https://avatarmate.herokuapp.com/api/v1/avatars/<ID>"
 }
 ```
 
-This endpoint deletes a specific avatar for current authorized user.
+This endpoint deletes a specific avatar for the currently authorized user.
 
 ### HTTP Request
 
@@ -216,3 +214,66 @@ Parameter | Description
 --------- | -----------
 ID | The ID of the avatar to delete
 
+# Users
+
+## Create a User
+
+```shell
+curl "https://avatarmate.herokuapp.com/api/v1/users"
+  -H "Content-Type:application/json"
+  -X POST
+  -d '{"email":"email@domain.com","password":"supersecret"}'
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "message": "Account created successfully! Please check your email for details."
+}
+```
+
+This endpoint creates a user and sends a generated API key to new user's email.
+
+<aside class="notice">Creating a user sends an email to the registered email address. Make sure to check your email for your API key!</aside>
+
+### HTTP Request
+
+`POST https://avatarmate.herokuapp.com/api/v1/users`
+
+### JSON Parameters
+
+Parameter | Requirements | Required
+--------- | ----------- | ---------
+email | Unique, At Least 5 Characters, Valid Email | Y
+password | At Least 6 Characters | Y
+
+## Request API Key - Login a User
+
+```shell
+curl "https://avatarmate.herokuapp.com/api/v1/users/login"
+  -H "Content-Type:application/json"
+  -X POST
+  -d '{"email":"email@domain.com","password":"supersecret"}'
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "message": "An email has been sent to email@domain.com with your account details."
+}
+```
+
+This endpoint authenticates a user and sends an email with the user's API key.
+
+### HTTP Request
+
+`POST https://avatarmate.herokuapp.com/api/v1/users/login`
+
+### JSON Parameters
+
+Parameter | Required
+--------- | ---------
+email | Y
+password | Y
