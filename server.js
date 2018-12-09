@@ -10,6 +10,10 @@ const views = require('./controllers/views');
 const { db } = require("./services");
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const cors = require('cors');
+
+// Allows cors for js apps
+app.use(cors());
 
 // connect to mongodb
 const dbConnection = db.connect();
