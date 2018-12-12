@@ -7,14 +7,27 @@ const server = require('../../server');
 chai.use(chaiHttp);
 
 // start our tests
-describe('API', () => {
+describe('Views:', () => {
 
   // GET INDEX TEST
-  it('should return json message for request at / GET', async() => {
+  it('should return html template for request at / GET', async() => {
     const res = await chai.request(server).get(`/`);
     res.should.have.status(200);
-    res.should.be.json;
-    res.body.should.have.key(`message`);
+    res.should.be.html;
+  });
+
+  // LOGIN PAGE TEST
+  it('should return html template for request at /login GET', async() => {
+    const res = await chai.request(server).get(`/login`);
+    res.should.have.status(200);
+    res.should.be.html;
+  });
+
+  // SIGNUP PAGE TEST
+  it('should return html template for request at /signup GET', async() => {
+    const res = await chai.request(server).get(`/signup`);
+    res.should.have.status(200);
+    res.should.be.html;
   });
 
   // NOTFOUND TEST
